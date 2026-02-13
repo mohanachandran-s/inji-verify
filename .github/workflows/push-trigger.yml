@@ -278,9 +278,6 @@ jobs:
       DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
       ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
       RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
-<<<<<<< Updated upstream
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-=======
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
 
@@ -328,4 +325,3 @@ jobs:
     - name: Shutdown Stack
       if: always()
       run: docker compose -f docker-compose-ci.yml down
->>>>>>> Stashed changes
