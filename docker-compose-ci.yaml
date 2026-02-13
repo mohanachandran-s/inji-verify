@@ -54,10 +54,7 @@ services:
       ENV_TESTLEVEL: smoke
       ENV_USER: api-internal.dev-int-inji
       NS: injiverify
-      AUTH_CERTS_PATH: /home/mosip/authcerts
-      AUTH_DEMO_SERVICE_BASE_URL: http://authdemo.authdemo
-      AUTH_DEMO_SERVICE_PORT: 80
-      ESIGNET_DEPLOYED: "yes"
-      INJI_VERIFY_BASE_URL: https://injiverify.dev-int-inji.mosip.net
-      REPORT_EXPIRATION_IN_DAYS: "3"
-      S3_ACCOUNT: apitestrig-injiverify-dev
+      injiVerifyBaseUrl: http://verify-service:8080
+      reportExpirationInDays: "3"
+      s3-account: apitestrig-injiverify-dev
+      mosip_components_base_urls: auditmanager=api-internal.released.mosip.net;idrepository=api-internal.released.mosip.net;authmanager=api-internal.released.mosip.net;resident=api-internal.released.mosip.net;partnermanager=api-internal.released.mosip.net;idauthentication=api-internal.released.mosip.net;masterdata=api-internal.released.mosip.net;idgenerator=api-internal.released.mosip.net;policymanager=api-internal.released.mosip.net;preregistration=api-internal.released.mosip.net;keymanager=api-internal.released.mosip.net;mock-identity-system=api.released.mosip.net
