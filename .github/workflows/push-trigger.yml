@@ -326,6 +326,14 @@ jobs:
       - name: Run API Tests
         run: docker compose -f docker-compose-ci.yaml run --rm apitest
 
+      - name: Print verify-service logs
+        if: always()
+        run: docker logs verify-service
+
+      - name: Print all service logs
+        if: always()
+        run: docker compose -f docker-compose-ci.yaml logs
+
       - name: Shutdown
         if: always()
         run: docker compose -f docker-compose-ci.yaml down
