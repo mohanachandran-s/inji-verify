@@ -14,9 +14,7 @@ services:
 
   verify-service:
     container_name: verify-service
-    build:
-      context: .
-      dockerfile: verify-service/Dockerfile
+    image: mosipdev/inji-verify-service:develop
     ports:
       - "8080:8080"
     environment:
