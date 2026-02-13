@@ -50,5 +50,14 @@ services:
       verify-service:
         condition: service_healthy
     environment:
-      ENV_ENDPOINT: http://verify-service:8080
-      ENV_TESTLEVEL: smokeAndRegression
+      ENV_ENDPOINT: https://api-internal.dev-int-inji.mosip.net
+      ENV_TESTLEVEL: smoke
+      ENV_USER: api-internal.dev-int-inji
+      NS: injiverify
+      AUTH_CERTS_PATH: /home/mosip/authcerts
+      AUTH_DEMO_SERVICE_BASE_URL: http://authdemo.authdemo
+      AUTH_DEMO_SERVICE_PORT: 80
+      ESIGNET_DEPLOYED: "yes"
+      INJI_VERIFY_BASE_URL: https://injiverify.dev-int-inji.mosip.net
+      REPORT_EXPIRATION_IN_DAYS: "3"
+      S3_ACCOUNT: apitestrig-injiverify-dev
