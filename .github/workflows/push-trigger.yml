@@ -281,19 +281,20 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
   run-apitest-pr:
+    needs: build-dockers
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Pull API Test Image
-        run: docker pull mosipdev/apitest-inji-verify:develop
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.ACTOR_DOCKER_HUB }}" | docker login -u "${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}" --password-stdin
 
-      - name: Start Full Stack (Service + DB)
-        run: docker compose -f docker-compose-ci.yaml up -d --build
+      - name: Start Full Stack
+        run: docker compose -f docker-compose-ci.yaml up -d
 
-      - name: Wait for Service to be Healthy
+      - name: Wait for Service
         run: |
           for i in {1..30}; do
             if curl -s http://localhost:8080/actuator/health | grep UP; then
@@ -302,25 +303,11 @@ jobs:
             fi
             sleep 5
           done
-          echo "Service did not start"
           exit 1
 
       - name: Run API Tests
         run: docker compose -f docker-compose-ci.yaml run --rm apitest
 
-      - name: Collect Reports
-        if: always()
-        run: |
-          mkdir -p reports
-          docker cp $(docker ps -a -q --filter "name=apitest"):/home/inji/reports ./reports || true
-
-      - name: Upload Reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: apitest-report
-          path: reports/
-
-      - name: Shutdown Stack
+      - name: Shutdown
         if: always()
         run: docker compose -f docker-compose-ci.yaml down
