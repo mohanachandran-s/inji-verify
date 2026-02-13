@@ -288,9 +288,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Login to Docker Hub
-        run: echo "${{ secrets.ACTOR_DOCKER_HUB }}" | docker login -u "${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}" --password-stdin
-
       - name: Start Full Stack
         run: docker compose -f docker-compose-ci.yaml up -d
 
