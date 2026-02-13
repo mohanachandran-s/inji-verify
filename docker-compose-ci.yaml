@@ -27,11 +27,11 @@ services:
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=postgres
       - INJI_VP_REQUEST_LONG_POLLING_TIMEOUT=55000
-      - INJI_VP_SUBMISSION_BASE_URL=https://verify-service:8080/v1/verify
-      - INJI_DID_VERIFY_URI=did:web:verify-service:8080:v1:verify
-      - INJI_DID_VERIFY_PUBLIC_KEY_URI=did:web:verify-service:8080:verify#key-0
+      - INJI_VP_SUBMISSION_BASE_URL=https://VERIFY_SERVICE_PROXY_FOR_LOCALHOST/v1/verify
+      - INJI_DID_VERIFY_URI=did:web:VERIFY_SERVICE_PROXY_FOR_LOCALHOST:v1:verify
+      - INJI_DID_VERIFY_PUBLIC_KEY_URI=did:web:VERIFY_SERVICE_PROXY_FOR_LOCALHOST:verify#key-0
       - INJI_KEYSTORE_FILE_PASS=mosip
-      - INJI_VERIFY_REDIRECT_URI=https://verify-service:8080
+      - INJI_VERIFY_REDIRECT_URI=https://VERIFY_SERVICE_PROXY_FOR_LOCALHOST
       - INJI_VERIFY_CLAIMS_WITH_META_DATA=_sd,_sd_alg,iss,cnf,sub,aud,exp,nbf,iat,cti
     depends_on:
       - postgres
@@ -52,7 +52,7 @@ services:
       ENV_TESTLEVEL: smoke
       ENV_USER: api-internal.dev-int-inji
       NS: injiverify
-      injiVerifyBaseUrl: http://verify-service:8080
+      injiVerifyBaseUrl: http://localhost:8080
       reportExpirationInDays: "3"
       s3-account: apitestrig-injiverify-dev
       mosip_components_base_urls: auditmanager=api-internal.released.mosip.net;idrepository=api-internal.released.mosip.net;authmanager=api-internal.released.mosip.net;resident=api-internal.released.mosip.net;partnermanager=api-internal.released.mosip.net;idauthentication=api-internal.released.mosip.net;masterdata=api-internal.released.mosip.net;idgenerator=api-internal.released.mosip.net;policymanager=api-internal.released.mosip.net;preregistration=api-internal.released.mosip.net;keymanager=api-internal.released.mosip.net;mock-identity-system=api.released.mosip.net
