@@ -280,48 +280,47 @@ jobs:
       RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
-
   run-apitest-pr:
-  if: github.event_name == 'pull_request'
-  runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
 
-  steps:
-    - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-    - name: Pull API Test Image
-      run: docker pull mosipdev/apitest-inji-verify:latest
+      - name: Pull API Test Image
+        run: docker pull mosipdev/apitest-inji-verify:develop
 
-    - name: Start Full Stack (Service + DB)
-      run: docker compose -f docker-compose-ci.yml up -d --build
+      - name: Start Full Stack (Service + DB)
+        run: docker compose -f docker-compose-ci.yml up -d --build
 
-    - name: Wait for Service to be Healthy
-      run: |
-        for i in {1..30}; do
-          if curl -s http://localhost:8080/actuator/health | grep UP; then
-            echo "Service is UP"
-            exit 0
-          fi
-          sleep 5
-        done
-        echo "Service did not start"
-        exit 1
+      - name: Wait for Service to be Healthy
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:8080/actuator/health | grep UP; then
+              echo "Service is UP"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Service did not start"
+          exit 1
 
-    - name: Run API Tests
-      run: docker compose -f docker-compose-ci.yml run --rm apitest
+      - name: Run API Tests
+        run: docker compose -f docker-compose-ci.yml run --rm apitest
 
-    - name: Collect Reports
-      if: always()
-      run: |
-        mkdir -p reports
-        docker cp $(docker ps -a -q --filter "name=apitest"):/home/inji/reports ./reports || true
+      - name: Collect Reports
+        if: always()
+        run: |
+          mkdir -p reports
+          docker cp $(docker ps -a -q --filter "name=apitest"):/home/inji/reports ./reports || true
 
-    - name: Upload Reports
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: apitest-report
-        path: reports/
+      - name: Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: apitest-report
+          path: reports/
 
-    - name: Shutdown Stack
-      if: always()
-      run: docker compose -f docker-compose-ci.yml down
+      - name: Shutdown Stack
+        if: always()
+        run: docker compose -f docker-compose-ci.yml down
