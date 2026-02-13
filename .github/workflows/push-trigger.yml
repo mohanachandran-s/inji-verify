@@ -291,7 +291,7 @@ jobs:
         run: docker pull mosipdev/apitest-inji-verify:develop
 
       - name: Start Full Stack (Service + DB)
-        run: docker compose -f .github/workflows/docker-compose-ci.yml up -d --build
+        run: docker compose -f .github/workflows/docker-compose-ci.yaml up -d --build
 
       - name: Wait for Service to be Healthy
         run: |
@@ -306,7 +306,7 @@ jobs:
           exit 1
 
       - name: Run API Tests
-        run: docker compose -f .github/workflows/docker-compose-ci.yml run --rm apitest
+        run: docker compose -f .github/workflows/docker-compose-ci.yaml run --rm apitest
 
       - name: Collect Reports
         if: always()
@@ -323,4 +323,4 @@ jobs:
 
       - name: Shutdown Stack
         if: always()
-        run: docker compose -f .github/workflows/docker-compose-ci.yml down
+        run: docker compose -f .github/workflows/docker-compose-ci.yaml down
