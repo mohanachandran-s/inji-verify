@@ -11,10 +11,13 @@ services:
       POSTGRES_DB: inji_verify
     ports:
       - "5432:5432"
+    volumes:
+      - ./db-init:/docker-entrypoint-initdb.d
 
-  verify-service:
+    verify-service:
     container_name: verify-service
     image: mosipdev/inji-verify-service:develop
+    user: root
     ports:
       - "8080:8080"
     environment:
@@ -25,12 +28,21 @@ services:
       - DATABASE_SCHEMA=verify
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=postgres
+      - INJI_VP_REQUEST_LONG_POLLING_TIMEOUT=55000
+      - INJI_VP_SUBMISSION_BASE_URL=https://VERIFY_SERVICE_PROXY_FOR_LOCALHOST/v1/verify
+      - INJI_DID_VERIFY_URI=did:web:VERIFY_SERVICE_PROXY_FOR_LOCALHOST:v1:verify
+      - INJI_DID_VERIFY_PUBLIC_KEY_URI=did:web:VERIFY_SERVICE_PROXY_FOR_LOCALHOST:verify#key-0
+      - INJI_KEYSTORE_FILE_PASS=mosip
+      - INJI_VERIFY_REDIRECT_URI=https://VERIFY_SERVICE_PROXY_FOR_LOCALHOST
+      - INJI_VERIFY_CLAIMS_WITH_META_DATA=_sd,_sd_alg,iss,cnf,sub,aud,exp,nbf,iat,cti
     depends_on:
       - postgres
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/v1/verify/actuator/health"]
       interval: 10s
-      retries: 10
+      timeout: 5s
+      retries: 30
+      start_period: 30s
 
   apitest:
     image: mosipdev/apitest-inji-verify:latest
