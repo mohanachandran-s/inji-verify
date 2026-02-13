@@ -14,7 +14,7 @@ services:
     volumes:
       - ./db-init:/docker-entrypoint-initdb.d
 
-    verify-service:
+  verify-service:
     container_name: verify-service
     image: mosipdev/inji-verify-service:develop
     user: root
