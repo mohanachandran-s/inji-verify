@@ -281,7 +281,6 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
   run-apitest-pr:
-    needs: build-dockers
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
 
@@ -304,10 +303,11 @@ jobs:
           sudo wg-quick up wg0
           sudo wg show wg0
 
-      - name: Pull images
-        run: |
-          docker pull mosipdev/inji-verify-service:develop
-          docker pull mosipdev/apitest-inji-verify:latest
+      - name: Build verify-service image
+        run: docker build -t inji-verify-service:ci ./verify-service
+
+      - name: Build apitest image
+        run: docker build -t apitest-inji-verify:ci ./api-test
 
       - name: Start Full Stack
         run: docker compose -f docker-compose/docker-compose-ci.yaml up -d

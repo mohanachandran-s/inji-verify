@@ -14,7 +14,7 @@ services:
 
   verify-service:
     container_name: verify-service
-    image: mosipdev/inji-verify-service:develop
+    image: inji-verify-service:ci
     user: root
     ports:
       - "8080:8080"
@@ -43,7 +43,7 @@ services:
       start_period: 30s
 
   apitest:
-    image: mosipdev/apitest-inji-verify:latest
+    image: apitest-inji-verify:ci
     depends_on:
       verify-service:
         condition: service_healthy

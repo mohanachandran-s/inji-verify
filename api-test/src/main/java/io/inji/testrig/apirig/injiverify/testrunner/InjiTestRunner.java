@@ -45,6 +45,7 @@ public class InjiTestRunner {
 	public static String jarUrl = InjiTestRunner.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 	public static List<String> languageList = new ArrayList<>();
 	public static boolean skipAll = false;
+	private static boolean hasFailures = false;
 
 	/**
 	 * C Main method to start mosip test execution
@@ -106,6 +107,19 @@ public class InjiTestRunner {
 		} else {
 			LOGGER.info("Skipping dependency generation");
 		}
+		
+		boolean isCI = System.getenv("CI") != null || "true".equalsIgnoreCase(System.getenv("GITHUB_ACTIONS"));
+
+		if (hasFailures) {
+			LOGGER.error("Test execution completed with FAILURES.");
+
+			if (isCI) {
+				LOGGER.error("CI environment detected → exiting with failure code.");
+				System.exit(1);
+			}
+		} else {
+			LOGGER.info("All tests passed successfully.");
+		}
 
 		System.exit(0);
 
@@ -166,9 +180,14 @@ public class InjiTestRunner {
 					System.getProperties().setProperty("testng.outpur.dir", "testng-report");
 					runner.setOutputDirectory("testng-report");
 					runner.run();
+					
+					if (runner.hasFailure()) {
+	                    hasFailures = true;
+	                }
 				}
 			}
 		} else {
+			hasFailures = true;
 			LOGGER.error("No files found in directory: " + homeDir);
 		}
 	}
