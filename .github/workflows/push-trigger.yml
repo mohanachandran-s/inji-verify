@@ -303,6 +303,11 @@ jobs:
           sudo wg-quick up wg0
           sudo wg show wg0
 
+      - name: Build verify-service jar
+        run: |
+          cd verify-service
+          mvn clean package -DskipTests
+
       - name: Build verify-service image
         run: docker build -t inji-verify-service:ci ./verify-service
 
