@@ -310,7 +310,7 @@ jobs:
           docker pull mosipdev/apitest-inji-verify:latest
 
       - name: Start Full Stack
-        run: docker compose -f docker-compose-ci.yaml up -d
+        run: docker compose -f docker-compose/docker-compose-ci.yaml up -d
 
       - name: Wait for Service
         run: |
@@ -324,7 +324,7 @@ jobs:
           exit 1
 
       - name: Run API Tests
-        run: docker compose -f docker-compose-ci.yaml run --rm apitest
+        run: docker compose -f docker-compose/docker-compose-ci.yaml run --rm apitest
 
       - name: Print verify-service logs
         if: always()
@@ -332,8 +332,8 @@ jobs:
 
       - name: Print all service logs
         if: always()
-        run: docker compose -f docker-compose-ci.yaml logs
+        run: docker compose -f docker-compose/docker-compose-ci.yaml logs
 
       - name: Shutdown
         if: always()
-        run: docker compose -f docker-compose-ci.yaml down
+        run: docker compose -f docker-compose/docker-compose-ci.yaml down
