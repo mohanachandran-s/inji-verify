@@ -17,7 +17,7 @@
 				name="io.inji.testrig.apirig.injiverify.testscripts.SimplePostForAutoGenId" />
 		</classes>
 	</test>
-	<!--<test name="CreateNewVerificationRequestWithProof">
+	<test name="CreateNewVerificationRequestWithProof">
 		<parameter name="ymlFile"
 			value="injiverify/CreateNewVerificationRequestWithProof/CreateNewVerificationRequestWithOutProof.yml" />
 			<parameter name="idKeyName" value="transactionId,requestId,id" />
@@ -137,5 +137,5 @@
 			<class
 				name="io.inji.testrig.apirig.injiverify.testscripts.PostWithBodyAndPathParams" />
 		</classes>
-	</test>-->
+	</test>
 </suite>
