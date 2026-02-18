@@ -348,7 +348,7 @@ jobs:
         id: apitest
         run: |
           set +e
-          docker compose -f docker-compose/docker-compose-ci.yaml up apitest
+          docker compose -f docker-compose/docker-compose-ci.yaml up --exit-code-from apitest apitest
           EXIT_CODE=$?
           echo "EXIT_CODE=$EXIT_CODE" >> $GITHUB_ENV
           set -e
