@@ -108,7 +108,7 @@ public class InjiTestRunner {
 			LOGGER.info("Skipping dependency generation");
 		}
 		
-		boolean isCI = System.getenv("CI") != null || "true".equalsIgnoreCase(System.getenv("GITHUB_ACTIONS"));
+		boolean isCI = "true".equalsIgnoreCase(System.getenv("CI"));
 
 		if (hasFailures) {
 			LOGGER.error("Test execution completed with FAILURES.");

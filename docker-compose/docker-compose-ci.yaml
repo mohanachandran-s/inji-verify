@@ -49,9 +49,10 @@ services:
         condition: service_healthy
     environment:
       ENV_ENDPOINT: https://api-internal.dev-int-inji.mosip.net
-      ENV_TESTLEVEL: smoke
+      ENV_TESTLEVEL: smokeAndRegression
       ENV_USER: api-internal.dev-int-inji
       NS: injiverify
+      CI: "true"
       injiVerifyBaseUrl: http://verify-service:8080
       reportExpirationInDays: "3"
       s3-account: apitestrig-injiverify-dev
