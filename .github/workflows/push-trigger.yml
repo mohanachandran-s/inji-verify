@@ -322,7 +322,10 @@ jobs:
         run: docker build -t inji-verify-service:ci ./verify-service
 
       - name: Prepare apitest build context
-        run: cp api-test/entrypoint.sh .
+        run: |
+          cp api-test/entrypoint.sh .
+          cp -r api-test/testNgXmlFiles api-test/target/testNgXmlFiles
+          cp -r api-test/target/classes/config api-test/target/config
 
       - name: Build apitest image
         run: docker build -t apitest-inji-verify:ci -f api-test/Dockerfile .
