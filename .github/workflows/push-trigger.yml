@@ -331,6 +331,10 @@ jobs:
         run: docker build -t apitest-inji-verify:ci -f api-test/Dockerfile .
 
       - name: Start Full Stack
+        env:
+          S3_ACCOUNT: ${{ secrets.S3_ACCOUNT }}
+          S3_USER_SECRET: ${{ secrets.S3_USER_SECRET }}
+          S3_USER_KEY: ${{ secrets.S3_USER_KEY }}
         run: docker compose -f docker-compose/docker-compose-ci.yaml up -d
 
       - name: Wait for Service
