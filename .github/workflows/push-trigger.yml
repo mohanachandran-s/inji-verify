@@ -322,7 +322,7 @@ jobs:
         run: docker build -t inji-verify-service:ci ./verify-service
 
       - name: Build apitest image
-        run: docker build -t apitest-inji-verify:ci -f api-test/Dockerfile
+        run: docker build -t apitest-inji-verify:ci -f api-test/Dockerfile .
 
       - name: Start Full Stack
         run: docker compose -f docker-compose/docker-compose-ci.yaml up -d
