@@ -330,12 +330,6 @@ jobs:
       - name: Build apitest image
         run: docker build -t apitest-inji-verify:ci -f api-test/Dockerfile .
 
-      - name: Export secrets for docker compose
-        run: |
-          echo "S3_ACCOUNT=${{ secrets.S3_ACCOUNT }}" >> $GITHUB_ENV
-          echo "S3_USER_KEY=${{ secrets.S3_USER_KEY }}" >> $GITHUB_ENV
-          echo "S3_USER_SECRET=${{ secrets.S3_USER_SECRET }}" >> $GITHUB_ENV
-
       - name: Start Full Stack
         run: docker compose -f docker-compose/docker-compose-ci.yaml up -d
 
@@ -356,7 +350,7 @@ jobs:
           chmod -R 777 ci-reports
 
       - name: Run API Tests
-        run: docker compose -f docker-compose/docker-compose-ci.yaml run --rm apitest
+        run: docker compose -f docker-compose/docker-compose-ci.yaml up --abort-on-container-exit --exit-code-from apitest
 
       - name: Upload Test Report
         if: always()
