@@ -55,6 +55,7 @@ services:
       CI: "true"
       injiVerifyBaseUrl: http://verify-service:8080
       reportExpirationInDays: "3"
+      s3-host: https://minio.dev-int-inji.mosip.net/9000
       s3-account: ${S3_ACCOUNT}
       s3-user-key: ${S3_USER_KEY}
       s3-user-secret: ${S3_USER_SECRET}
