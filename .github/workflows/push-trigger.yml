@@ -350,7 +350,12 @@ jobs:
           chmod -R 777 ci-reports
 
       - name: Run API Tests
-        run: docker compose -f docker-compose/docker-compose-ci.yaml up --abort-on-container-exit --exit-code-from apitest
+        id: apitest
+        run: |
+          set +e
+          docker compose -f docker-compose/docker-compose-ci.yaml up --abort-on-container-exit --exit-code-from apitest
+          echo "EXIT_CODE=$?" >> $GITHUB_ENV
+          set -e
 
       - name: Upload Test Report
         if: always()
