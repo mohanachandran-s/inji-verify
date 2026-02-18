@@ -344,18 +344,26 @@ jobs:
           done
           exit 1
 
-      - name: Prepare report directory
-        run: |
-          mkdir -p ci-reports
-          chmod -R 777 ci-reports
-
       - name: Run API Tests
         id: apitest
         run: |
           set +e
-          docker compose -f docker-compose/docker-compose-ci.yaml up --abort-on-container-exit --exit-code-from apitest
-          echo "EXIT_CODE=$?" >> $GITHUB_ENV
+          docker compose -f docker-compose/docker-compose-ci.yaml up apitest
+          EXIT_CODE=$?
+          echo "EXIT_CODE=$EXIT_CODE" >> $GITHUB_ENV
           set -e
+
+      - name: Copy reports from container
+        if: always()
+        run: |
+          mkdir -p ci-reports
+          CONTAINER_ID=$(docker ps -a --filter "name=apitest" --format "{{.ID}}" | head -n 1)
+          if [ -n "$CONTAINER_ID" ]; then
+            docker cp $CONTAINER_ID:/home/inji/testng-report/. ci-reports || echo "No reports found"
+          else
+            echo "Apitest container not found"
+          fi
+          ls -R ci-reports || true
 
       - name: Upload Test Report
         if: always()
@@ -375,3 +383,7 @@ jobs:
       - name: Shutdown
         if: always()
         run: docker compose -f docker-compose/docker-compose-ci.yaml down
+
+      - name: Fail Job If Tests Failed
+        if: env.EXIT_CODE != '0'
+        run: exit 1
