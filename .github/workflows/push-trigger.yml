@@ -321,6 +321,9 @@ jobs:
       - name: Build verify-service image
         run: docker build -t inji-verify-service:ci ./verify-service
 
+      - name: Prepare apitest build context
+        run: cp api-test/entrypoint.sh .
+
       - name: Build apitest image
         run: docker build -t apitest-inji-verify:ci -f api-test/Dockerfile .
 
