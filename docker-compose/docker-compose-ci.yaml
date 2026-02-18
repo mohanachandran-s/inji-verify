@@ -44,6 +44,7 @@ services:
 
   apitest:
     image: apitest-inji-verify:ci
+    user: root
     volumes:
       - ./ci-reports:/home/inji/testng-report
     depends_on:
