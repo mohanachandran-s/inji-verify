@@ -44,6 +44,8 @@ services:
 
   apitest:
     image: apitest-inji-verify:ci
+    volumes:
+      - ./ci-reports:/home/inji/testng-report
     depends_on:
       verify-service:
         condition: service_healthy

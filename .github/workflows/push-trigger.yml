@@ -353,6 +353,13 @@ jobs:
       - name: Run API Tests
         run: docker compose -f docker-compose/docker-compose-ci.yaml run --rm apitest
 
+      - name: Upload Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: inji-verify-test-report
+          path: ci-reports/
+
       - name: Print verify-service logs
         if: always()
         run: docker logs verify-service
