@@ -76,8 +76,6 @@ public class InjiTestRunner {
 			Thread trigger = new Thread(healthcheck);
 			trigger.start();
 
-			BaseTestCase.getLanguageList();
-			
 			generateDependency = InjiVerifyConfigManager.getproperty("generateDependencyJson");
 
 			if (!"yes".equalsIgnoreCase(generateDependency)) {
